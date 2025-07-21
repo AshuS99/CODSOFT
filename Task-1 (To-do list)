@@ -1,0 +1,76 @@
+import os
+
+print("1. Already have a to-do list and want to check it")
+print("2. Creating it for the first time")
+x = int(input("Enter your choice: "))
+
+if x == 1:
+    n = input("Enter the file name: ")
+
+    # Check if file exists, if not create it
+    if not os.path.exists(n):
+        with open(n, 'w') as f:
+            pass  # create an empty file
+        print(f"{n} did not exist, so it has been created.")
+
+    with open(n, 'r+') as file:
+        print("What do you want to do:")
+        print("1. Add task")
+        print("2. Delete task")
+        print("3. View current to-do list")  # Added option to view the current to-do list
+        c = int(input("Enter your choice: "))
+
+        if c == 1:
+            t = int(input("Enter the number of tasks you want to add: "))
+            for i in range(1, t + 1):
+                task = input(f"Enter task {i}: ")
+                file.write(task + '\n')
+
+            file.seek(0)
+            content = file.read()
+            print("TO DO LIST:")
+            print(content)
+
+        elif c == 2:
+            lines = file.readlines()
+            print("TO DO LIST:")
+            for i, line in enumerate(lines, start=1):
+                print(f"{i}. {line.strip()}")
+
+            l = int(input("Enter the line number of the task you want to delete: "))
+            if 1 <= l <= len(lines):
+                del lines[l - 1]
+                file.seek(0)
+                file.truncate()
+                file.writelines(lines)
+                print("Updated TO DO LIST:")
+                for line in lines:
+                    print(line.strip())
+            else:
+                print("Invalid line number.")
+        
+        elif c == 3:  # Handle the 'View current to-do list' option
+            file.seek(0)
+            content = file.read()
+            print("Current TO DO LIST:")
+            print(content)
+
+elif x == 2:
+    filename = "TodoList.txt"
+
+    # Create the file if it doesn't exist
+    if not os.path.exists(filename):
+        with open(filename, 'w') as f:
+            pass
+        print(f"{filename} has been created.")
+
+    with open(filename, 'r+') as file:
+        z = int(input("How many tasks do you want to add? "))
+        for i in range(1, z + 1):
+            task = input(f"Enter task {i}: ")
+            file.write(task + '\n')
+
+        file.seek(0)
+        content = file.read()
+        print("TO DO LIST:")
+        print(content)
